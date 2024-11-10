@@ -14,7 +14,7 @@ size = 8,
 maxsize = 64,
 filegrowth = 2
 )
-use QLSV
+use QLSVien
 
 
 
@@ -28,7 +28,7 @@ CREATE TABLE SINHVIEN (
     NgSinh DATE NOT NULL,
     GioiTinh CHAR(1) CHECK (GioiTinh IN ('M', 'F')),
     Lop CHAR(4) NOT NULL,
-    MaGV_CN CHAR(5)
+    MaGV_CN CHAR(5))
 
 	--------Tạo Khóa Chính, Khóa Ngoại và Đặt Tên Ngay Trong Khi Tạo TABLE--------
 
@@ -42,7 +42,7 @@ CREATE TABLE GIANGVIEN (
     Email NVARCHAR(50) NOT NULL,
     DiaChi NVARCHAR(100),
     SoDienThoai CHAR(10),
-    MaKhoa CHAR(5)
+    MaKhoa CHAR(5))
 
 	--------Tạo Khóa Chính, Khóa Ngoại và Đặt Tên Ngay Trong Khi Tạo TABLE--------
 
@@ -52,7 +52,7 @@ CREATE TABLE GIANGVIEN (
 -- Tạo bảng KHOA
 CREATE TABLE KHOA (
     MaKhoa CHAR(5) NOT NULL,
-    TenKhoa NVARCHAR(50) NOT NULL
+    TenKhoa NVARCHAR(50) NOT NULL)
 
 	--------Tạo Khóa Chính, Khóa Ngoại và Đặt Tên Ngay Trong Khi Tạo TABLE--------
 
@@ -65,7 +65,7 @@ CREATE TABLE MON (
     MaMon CHAR(5) NOT NULL,
     TenMon NVARCHAR(50) NOT NULL,
     SoTC INT CHECK (SoTC > 0),
-    Nhom CHAR(2) CHECK (Nhom IN ('TC', 'BB', 'BBĐK')) 
+    Nhom CHAR(2) CHECK (Nhom IN ('TC', 'BB', 'BBĐK')))
 
 	--------Tạo Khóa Chính, Khóa Ngoại và Đặt Tên Ngay Trong Khi Tạo TABLE--------
 
@@ -77,7 +77,7 @@ CREATE TABLE DAY (
     MaGV CHAR(5)NOT NULL,
     MaMon CHAR(5)NOT NULL,
     HocKy CHAR(5),
-    NamHoc CHAR(9),
+    NamHoc CHAR(9),)
 
 	--------Tạo Khóa Chính, Khóa Ngoại và Đặt Tên Ngay Trong Khi Tạo TABLE--------
 
@@ -94,7 +94,7 @@ CREATE TABLE KETQUA (
     PhongThi NVARCHAR(20),
     DiemThi FLOAT CHECK (DiemThi >= 0 AND DiemThi <= 10),
     LanThi INT CHECK (LanThi > 0),
-    Vang BIT -- 1: Vắng mặt, 0: Có mặt
+    Vang BIT ) -- 1: Vắng mặt, 0: Có mặt
 
 	--------Tạo Khóa Chính, Khóa Ngoại và Đặt Tên Ngay Trong Khi Tạo TABLE--------
 
@@ -215,3 +215,30 @@ insert into KETQUA values ('S002','COS33','2024-11-28','Số 2',8.3,2,0)
 insert into KETQUA values ('S001','COS31','2024-11-24','Số 3',9.5,1,0)
 insert into KETQUA values ('C113','TAA40','2024-11-27','Số 6',0,1,1)
 insert into KETQUA values ('S030','COS30','2024-11-22','Số 1',8.8,1,0)
+
+--Tạo tài khoản user12, pass 122--
+USE master;
+GO
+CREATE LOGIN user12
+	   WITH PASSWORD = '122',
+	   CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF,
+	   DEFAULT_DATABASE = QLSVien;
+GO
+
+USE QLSVien
+GO
+CREATE USER user12
+	FOR LOGIN user12
+GO
+--Xóa tài khoản user 12--
+
+DROP USER user12
+
+--Gán quyền thêm xóa sửa trong bảng GIANGVIEN cho user12--
+
+USE QLSVien
+GO
+GRANT UPDATE,INSERT,DELETE,Select
+ON GIANGVIEN TO user12;
+GO
+
